@@ -1,0 +1,394 @@
+title 434-hack
+author concrete atelier, original michael brough
+homepage www.puzzlescript.net
+run_rules_on_level_start
+again_interval 0.015
+
+========
+OBJECTS
+========
+
+Background
+darkgrey
+
+Tile_Top
+Black
+
+Tile_Bottom
+Black
+
+CTR
+white
+.0...
+.....
+.....
+.....
+.....
+
+Hurt
+red
+0....
+.....
+.....
+.....
+.....
+
+Move
+red
+
+Upkeep_Init
+Black
+
+Upkeep_DS_Used
+Black
+
+Data_Point
+Blue
+
+Data_Point_Empty
+DarkBlue
+
+HUD_Sector_0
+DarkGreen LightGreen
+01111
+01001
+01001
+01001
+01111
+
+Inc
+grey
+0....
+.....
+.....
+.....
+.....
+
+HUD_Score_0
+DarkGreen LightGreen
+01111
+01001
+01001
+01001
+01111
+
+HUD_Score_1
+DarkGreen LightGreen
+00110
+00010
+00010
+00010
+00111
+
+
+HUD_DS_0
+DarkGreen Yellow
+00000
+00000
+00000
+00000
+00000
+
+HUD_DS_1
+DarkGreen Yellow
+11000
+11000
+00000
+00000
+00000
+
+HUD_DS_2
+DarkGreen Yellow
+11011
+11011
+00000
+00000
+00000
+
+HUD_DS_3
+DarkGreen Yellow
+11011
+11011
+00000
+11000
+11000
+
+HUD_DS_4
+DarkGreen Yellow
+11011
+11011
+00000
+11011
+11011
+
+HUD_Credit_0
+DarkBrown
+
+HUD_Energy_0
+DarkBlue
+
+Skill_Empty
+DarkGreen
+
+Player_Active
+Yellow
+.000.
+0...0
+0...0
+0...0
+.000.
+
+Player_Mark
+Grey
+
+Enemy_Daemon_3
+Purple
+.000.
+0...0
+0...0
+00.00
+0.0.0
+
+Enemy_Daemon_2
+Purple
+.....
+.000.
+0...0
+00.00
+0.0.0
+
+Enemy_Daemon_1
+Purple
+.....
+.....
+.000.
+00.00
+0.0.0
+
+Enemy_Spawn
+Purple
+.....
+.000.
+.000.
+.000.
+.....
+
+Cursor
+White
+00000
+0...0
+0...0
+0...0
+00000
+
+Exit
+Green
+
+
+Smiley
+Yellow
+.....
+..0..
+.000.
+..0..
+.....
+
+
+=======
+LEGEND
+=======
+
+` = Tile_Top
+. = Tile_Bottom
+# = HUD_Sector_0 and Upkeep_Init
+_ = HUD_Score_0
++ = Skill_Empty and Inc
+% = HUD_DS_0
+$ = HUD_Credit_0
+~ = HUD_Energy_0
+[ = Skill_Empty
+P = Player_Active and Upkeep_Init and Tile_Top
+(
+* = Smiley and Tile
+^ = Exit and Tile
+1 = Data_Point and Tile
+
+D = Enemy_Daemon_3 and Tile
+)
+
+Skill = Skill_Empty
+HUD_DS = HUD_DS_0 or HUD_DS_1 or HUD_DS_2 or HUD_DS_3 or HUD_DS_4
+HUD_DS_Available = HUD_DS_1 or HUD_DS_2 or HUD_DS_3 or HUD_DS_4
+HUD_Score = HUD_Score_0 or HUD_Score_1
+HUD_Credit = HUD_Credit_0
+HUD_Energy = HUD_Energy_0
+HUD_Sector = HUD_Sector_0 
+HUD = HUD_Sector or HUD_Score or HUD_DS or HUD_Credit or HUD_Energy or Skill or Player_Mark
+HUD_Cancel = HUD_Sector or HUD_Score or HUD_Credit or HUD_Energy or Skill_Empty
+
+Upkeep = Upkeep_Init or Upkeep_DS_Used or Hurt  or Move
+Counters = Inc or CTR
+
+Enemy = Enemy_Spawn or Enemy_Daemon_3 or Enemy_Daemon_2 or Enemy_Daemon_1
+Enemy_Active = Enemy_Daemon_3 or Enemy_Daemon_2 or Enemy_Daemon_1
+
+Tiles = Tile_Top or Tile_Bottom
+
+Data = Data_Point or Data_Point_Empty
+
+Player = Player_Active or Cursor
+
+Active = Player_Active or Enemy_Active
+Inactive = Data or HUD
+
+=======
+SOUNDS
+=======
+
+================
+COLLISIONLAYERS
+================
+
+Background
+Tiles
+Data, Exit, Smiley, HUD
+Enemy
+Player
+Upkeep, Counters
+
+======
+RULES
+======
+
+( Turn Start )
+
+[ moving Player ] [ Enemy_Spawn ] -> [ moving Player ] [ Enemy_Daemon_3 ]
+
+( HUD functionality )
+[ Action Player_Active ] [ HUD_Sector ] -> [ Player_Mark ] [ HUD_Sector Cursor ]
+[ Action Cursor HUD_Cancel ] [ Player_Mark ] -> [ HUD_Cancel ] [ Player_Active ]
+
+( Data Siphon )
+( Points )
+[ Action Cursor HUD_DS_Available ] [ Player_Mark | Data_Point ]  -> [ Action Cursor HUD_DS_Available Upkeep_DS_Used ] [ Player_Mark | Data_Point_Empty CTR ] 
+
+Random [ CTR ] [ stationary Inc ] -> [ CTR ] [ Left Inc ] again
+Random [ CTR ] [ Tiles ] -> [ ] [ Enemy_Spawn Tiles ] again
+
+Left [ > Inc | HUD_Score ] -> [ Inc | > HUD_Score ]
+
+
+Left [ > HUD_Score_1 | HUD_Score ] -> [ HUD_Score_0 | > HUD_Score ]
+Left [ > HUD_Score_1 | No HUD_Score ] -> [ HUD_Score_0 | ]
+
+Left [ > HUD_Score_0 ] -> [ HUD_Score_1 ]
+
+
+(
+Left [ > HUD_Score_3 ] -> [ HUD_Score_4 ]
+Left [ > HUD_Score_4 ] -> [ HUD_Score_5 ]
+Left [ > HUD_Score_5 ] -> [ HUD_Score_6 ]
+Left [ > HUD_Score_6 ] -> [ HUD_Score_7 ]
+Left [ > HUD_Score_7 ] -> [ HUD_Score_8 ]
+Left [ > HUD_Score_8 ] -> [ HUD_Score_9 ]
+)
+
+( HUD Collision )
+[ > Active | Inactive ] -> [ Active | Inactive ]
+[ > Cursor | No HUD ] -> [ Cursor | ]
+
+
+
+
+( Attack enemy )
+[ > Player | Enemy ] -> [ Player | Enemy Hurt ]
+[ > Player | ... | No Enemy | Enemy ] -> [ Player | ... | No Enemy | Enemy Hurt ]
+
+
+
+
+( Enemy move )
+
+[ Enemy_Active No Hurt | Tiles No Inactive | ... | Player_Active ] -> [ Enemy_Active | Move Tiles | ... | Player_Active ]
+
+
+(
+[ > Enemy_Active No Hurt | Player_Active ] -> [ Enemy_Active | Player_Active Hurt ]
+)
+
+
+( Damage calculation )
+(
+late [ Enemy_Active No Move | Player_Active ] -> [ Enemy_Active | Player_Active Hurt ]
+late [ Hurt Player_Active ] -> [ Player_Mark ]
+)
+
+late [ Enemy_Active No Hurt | Tiles No Inactive | ... | Player_Active ] -> [ Enemy_Active | Move Tiles | ... | Player_Active ]
+
+late [ Enemy_Active No Hurt | Player_Active ] -> [ Enemy_Active | Move Player_Active ]
+
+
+late [ Enemy_Active No Hurt | Move Player_Active ] -> [ Enemy_Active | Player_Mark ]
+late [ Enemy_Active No Hurt | Move ] -> [ | Enemy_Active ]
+
+late [ Hurt Enemy_Daemon_3 ] -> [ Enemy_Daemon_2 ]
+late [ Hurt Enemy_Daemon_2 ] -> [ Enemy_Daemon_1 ]
+late [ Hurt Enemy_Daemon_1 ] -> [ ]
+
+
+( End Turn Actions)
+( Smiley collection )
+late [ Player Smiley ] [ HUD_DS_0 ] -> [ Player ] [ HUD_DS_1 ]
+late [ Player Smiley ] [ HUD_DS_1 ] -> [ Player ] [ HUD_DS_2 ]
+late [ Player Smiley ] [ HUD_DS_2 ] -> [ Player ] [ HUD_DS_3 ]
+late [ Player Smiley ] [ HUD_DS_3 ] -> [ Player ] [ HUD_DS_4 ]
+
+
+( Data Siphon usage )
+late [ HUD_DS_1 Upkeep_DS_Used ] [ Cursor ] [ Player_Mark ] -> [ HUD_DS_0 ] [ ] [ Player_Active ]
+late [ HUD_DS_2 Upkeep_DS_Used ] [ Cursor ] [ Player_Mark ] -> [ HUD_DS_1 ] [ ] [ Player_Active ]
+late [ HUD_DS_3 Upkeep_DS_Used ] [ Cursor ] [ Player_Mark ] -> [ HUD_DS_2 ] [ ] [ Player_Active ]
+late [ HUD_DS_4 Upkeep_DS_Used ] [ Cursor ] [ Player_Mark ] -> [ HUD_DS_3 ] [ ] [ Player_Active ]
+
+
+
+
+
+( Next Level )
+late [ Player_Active Exit ] -> [ Player_Active Upkeep_Init ]
+late [ Data_Point_Empty Tiles] [ Upkeep_Init ] -> [ Tiles ] [ Upkeep_Init ]
+late [ Smiley Tiles ] [ Upkeep_Init ] -> [ Tiles ] [ Upkeep_Init ]
+
+
+
+( Level Generation )
+
+late random [ Tiles ] [ Upkeep_Init ] -> [ Data_Point Tiles ] [ Upkeep_Init ]
+late random [ Tiles ] [ Upkeep_Init ] -> [ Data_Point Tiles ] [ Upkeep_Init ]
+
+late random [ Tiles ] [ Upkeep_Init ] -> [ Smiley Tiles ] [ Upkeep_Init ]
+late random [ Tiles ] [ Upkeep_Init ] -> [ Smiley Tiles ] [ Upkeep_Init ]
+
+late random [ Tiles ] [ Upkeep_Init ] -> [ Enemy_Daemon_3 Tiles ] [ Upkeep_Init ]
+late random [ Tiles ] [ Upkeep_Init ] -> [ Enemy_Daemon_3 Tiles ] [ Upkeep_Init ]
+
+late random [ Tiles ] [ Upkeep_Init ] -> [ Exit Tiles ] [ Upkeep_Init ]
+
+late [ Upkeep ] -> [ ]
+
+==============
+WINCONDITIONS
+==============
+
+=======
+LEVELS
+=======
+
+
+......#
+......%
+..P...[
+......[
+......[
+......[
+$_____+
