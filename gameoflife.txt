@@ -1,0 +1,402 @@
+title LIFE2
+author concrete atelier
+homepage concrete-atelier.com
+
+color_palette atari
+
+========
+OBJECTS
+========
+
+Background
+BLACK
+
+Player
+GREY
+
+Wall
+DARKGREY
+
+Dead
+BLACK
+
+Alive
+WHITE
+
+Add
+grey
+.0000
+.0..0
+.0..0
+.0..0
+.0000
+
+Add1
+grey
+..00.
+...0.
+...0.
+...0.
+..000
+
+Add2
+grey
+.0000
+....0
+.0000
+.0...
+.0000
+
+Add3
+grey
+.0000
+....0
+.0000
+....0
+.0000
+
+Add4
+grey
+.0..0
+.0..0
+.0000
+....0
+....0
+
+Temp
+darkgrey
+.0000
+.0..0
+.0..0
+.0..0
+.0000
+
+Temp1
+darkgrey
+..00.
+...0.
+...0.
+...0.
+..000
+
+Temp2
+darkgrey
+.0000
+....0
+.0000
+.0...
+.0000
+
+Temp3
+darkgrey
+.0000
+....0
+.0000
+....0
+.0000
+
+Temp4
+darkgrey
+.0..0
+.0..0
+.0000
+....0
+....0
+
+Goal
+grey
+
+=======
+LEGEND
+=======
+
+_ = Background
+. = Dead
+# = Wall
+P = Player and Wall
+G = Goal
+o = Alive
+
+Cell = Dead or Alive
+Adder = Add or Add1 or Add2 or Add3 or Add4
+Temps = Temp or Temp1 or Temp2 or Temp3 or Temp4
+
+Live = Add2 or Add3
+Die = Add or Add1 or Add4
+Birth = Add3
+
+=======
+SOUNDS
+=======
+
+
+
+================
+COLLISIONLAYERS
+================
+
+Background
+Wall, Goal
+Player
+Cell
+Adder
+Temps
+
+
+
+======
+RULES     
+======    
+
+( Starting directly above each cell,
+  count alive cells clockwise)
+  
+Up [ Cell | ] -> [ Cell | Temp ]
+
+( Upper Right )
+Right [ Temp  | ] -> [ | Add ] 
+Right [ Temp1 | ] -> [ | Add1 ] 
+
+[ Add  Alive ] -> [ Temp1 Alive ]
+[ Add1 Alive ] -> [ Temp2 Alive ]
+
+[ Add  ] -> [ Temp  ]
+[ Add1 ] -> [ Temp1 ]
+
+
+( Right )
+Down [ Temp  | ] -> [ | Add  ]
+Down [ Temp1 | ] -> [ | Add1 ]
+Down [ Temp2 | ] -> [ | Add2 ]
+
+[ Add  Alive ] -> [ Temp1 Alive ]
+[ Add1 Alive ] -> [ Temp2 Alive ]
+[ Add2 Alive ] -> [ Temp3 Alive ]
+
+[ Add  ] -> [ Temp  ]
+[ Add1 ] -> [ Temp1 ]
+[ Add2 ] -> [ Temp2 ]
+
+( Down Right )
+Down [ Temp  | ] -> [ | Add  ]
+Down [ Temp1 | ] -> [ | Add1 ]
+Down [ Temp2 | ] -> [ | Add2 ]
+Down [ Temp3 | ] -> [ | Add3 ]
+
+[ Add  Alive ] -> [ Temp1 Alive ]
+[ Add1 Alive ] -> [ Temp2 Alive ]
+[ Add2 Alive ] -> [ Temp3 Alive ]
+[ Add3 Alive ] -> [ Temp4 Alive ]
+
+[ Add  ] -> [ Temp  ]
+[ Add1 ] -> [ Temp1 ]
+[ Add2 ] -> [ Temp2 ]
+[ Add3 ] -> [ Temp3 ]
+
+( Down )
+Left [ Temp  | ] -> [ | Add  ]
+Left [ Temp1 | ] -> [ | Add1 ]
+Left [ Temp2 | ] -> [ | Add2 ]
+Left [ Temp3 | ] -> [ | Add3 ]
+Left [ Temp4 | ] -> [ | Add4 ]
+
+[ Add  Alive ] -> [ Temp1 Alive ]
+[ Add1 Alive ] -> [ Temp2 Alive ]
+[ Add2 Alive ] -> [ Temp3 Alive ]
+[ Add3 Alive ] -> [ Temp4 Alive ]
+
+[ Add  ] -> [ Temp  ]
+[ Add1 ] -> [ Temp1 ]
+[ Add2 ] -> [ Temp2 ]
+[ Add3 ] -> [ Temp3 ]
+[ Add4 ] -> [ Temp4 ]
+
+( Down Left)
+Left [ Temp  | ] -> [ | Add  ]
+Left [ Temp1 | ] -> [ | Add1 ]
+Left [ Temp2 | ] -> [ | Add2 ]
+Left [ Temp3 | ] -> [ | Add3 ]
+Left [ Temp4 | ] -> [ | Add4 ]
+
+[ Add  Alive ] -> [ Temp1 Alive ]
+[ Add1 Alive ] -> [ Temp2 Alive ]
+[ Add2 Alive ] -> [ Temp3 Alive ]
+[ Add3 Alive ] -> [ Temp4 Alive ]
+
+[ Add  ] -> [ Temp  ]
+[ Add1 ] -> [ Temp1 ]
+[ Add2 ] -> [ Temp2 ]
+[ Add3 ] -> [ Temp3 ]
+[ Add4 ] -> [ Temp4 ]
+
+
+( Left )
+Up [ Temp  | ] -> [ | Add  ]
+Up [ Temp1 | ] -> [ | Add1 ]
+Up [ Temp2 | ] -> [ | Add2 ]
+Up [ Temp3 | ] -> [ | Add3 ]
+Up [ Temp4 | ] -> [ | Add4 ]
+
+[ Add  Alive ] -> [ Temp1 Alive ]
+[ Add1 Alive ] -> [ Temp2 Alive ]
+[ Add2 Alive ] -> [ Temp3 Alive ]
+[ Add3 Alive ] -> [ Temp4 Alive ]
+
+[ Add  ] -> [ Temp  ]
+[ Add1 ] -> [ Temp1 ]
+[ Add2 ] -> [ Temp2 ]
+[ Add3 ] -> [ Temp3 ]
+[ Add4 ] -> [ Temp4 ]
+
+( Upper Left )
+Up [ Temp  | ] -> [ | Add  ]
+Up [ Temp1 | ] -> [ | Add1 ]
+Up [ Temp2 | ] -> [ | Add2 ]
+Up [ Temp3 | ] -> [ | Add3 ]
+Up [ Temp4 | ] -> [ | Add4 ]
+
+[ Add  Alive ] -> [ Temp1 Alive ]
+[ Add1 Alive ] -> [ Temp2 Alive ]
+[ Add2 Alive ] -> [ Temp3 Alive ]
+[ Add3 Alive ] -> [ Temp4 Alive ]
+
+[ Add  ] -> [ Temp  ]
+[ Add1 ] -> [ Temp1 ]
+[ Add2 ] -> [ Temp2 ]
+[ Add3 ] -> [ Temp3 ]
+[ Add4 ] -> [ Temp4 ]
+
+( Up )
+Right [ Temp  | ] -> [ | Add  ]
+Right [ Temp1 | ] -> [ | Add1 ]
+Right [ Temp2 | ] -> [ | Add2 ]
+Right [ Temp3 | ] -> [ | Add3 ]
+Right [ Temp4 | ] -> [ | Add4 ]
+
+[ Add  Alive ] -> [ Temp1 Alive ]
+[ Add1 Alive ] -> [ Temp2 Alive ]
+[ Add2 Alive ] -> [ Temp3 Alive ]
+[ Add3 Alive ] -> [ Temp4 Alive ]
+
+[ Add  ] -> [ Temp  ]
+[ Add1 ] -> [ Temp1 ]
+[ Add2 ] -> [ Temp2 ]
+[ Add3 ] -> [ Temp3 ]
+[ Add4 ] -> [ Temp4 ]
+
+( Walk down back to original position )
+Down [ Temp  | ] -> [ | Add  ]
+Down [ Temp1 | ] -> [ | Add1 ]
+Down [ Temp2 | ] -> [ | Add2 ]
+Down [ Temp3 | ] -> [ | Add3 ]
+Down [ Temp4 | ] -> [ | Add4 ]
+
+( Apply rules )
+
+[ Dead Birth ] -> [ Alive Birth ]
+[ Alive Live ] -> [ Alive  Live]
+[ Alive Die  ] -> [ Dead  Die ]
+
+( Erase counters )
+[ Adder ] -> [ No Adder ]
+
+
+
+==============
+WINCONDITIONS
+==============
+
+All Player on Goal
+
+=======     
+LEVELS
+=======
+
+
+Message Blinker
+
+#########
+#.......#
+#.......#
+#..ooo..#
+#.......#
+#.......#
+#.......#
+P#######G
+
+Message Dual Blinker
+
+#########
+#.......#
+#..ooo..#
+#.......#
+#.......#
+#..ooo..#
+#.......#
+P#######G
+
+
+Message Clock
+
+##############
+#......oo....#
+#......oo....#
+#............#
+#....oooo....#
+#oo.o..o.o...#
+#oo.o.o..o...#
+#...o.o..o.oo#
+#...o....o.oo#
+#....oooo....#
+#............#
+#....oo......#
+#....oo......#
+P############G
+
+
+Message Glider
+
+P########
+#.o.....#
+#..o....#
+#ooo....#
+#.......#
+#.......#
+#.......#
+########G
+
+
+Message Glider Gun
+
+########################################
+#......................................#
+#.........................o............#
+#.......................o.o............#
+#.............oo......oo............oo.#
+#............o...o....oo............oo.#
+#.oo........o.....o...oo...............#
+#.oo........o...o.oo....o.o............#
+#...........o.....o.......o............#
+#............o...o.....................#
+#.............oo.......................#
+#......................................#
+#......................................#
+#......................................#
+#......................................#
+#......................................#
+#......................................#
+#......................................#
+P######################################G
+
+
+
+Message Other
+
+#########
+#o......#
+#o...o..#
+#o..o.o.#
+#o.o.o.o#
+#o......#
+#.......#
+##P######
