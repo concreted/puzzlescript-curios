@@ -1,0 +1,226 @@
+title 2^11
+author concrete atelier
+homepage www.puzzlescript.net
+
+again_interval 0.01
+run_rules_on_level_start
+
+========
+OBJECTS
+========
+
+Background
+lightgrey
+
+Player
+lightgrey
+
+one
+white black
+00000
+00000
+00100
+00000
+00000
+
+two
+white black
+00000
+00000
+01010
+00000
+00000
+
+three
+white black
+00000
+00100
+00000
+01010
+00000
+
+four
+white black
+00000
+01010
+00000
+01010
+00000
+
+five
+white black
+00000
+01010
+00100
+01010
+00000
+
+six
+white black
+00000
+01010
+10001
+01010
+00000
+
+seven
+white black
+00000
+01010
+10101
+01010
+00000
+
+eight
+white black
+01010
+10001
+00000
+10001
+01010
+
+nine
+white black
+01010
+10001
+00100
+10001
+01010
+
+ten
+white black
+01010
+10001
+01010
+10001
+01010
+
+eleven
+white black
+11111
+11111
+11111
+11111
+11111
+
+mark
+lightgrey
+.0.0.
+0.0.0
+.0.0.
+0.0.0
+.0.0.
+
+Wall
+blue
+
+
+
+
+
+=======
+LEGEND
+=======
+
+. = Background
+# = Wall
+@ = Player
+1 = one
+2 = two
+s = mark
+Tile = one or two or three or four or five or six or seven or eight or nine or ten or eleven
+NotOne = two or three or four or five or six or seven or eight or nine or ten or eleven
+NotTwo = one or three or four or five or six or seven or eight or nine or ten or eleven
+NotThree = one or two or four or five or six or seven or eight or nine or ten or eleven
+NotFour = one or two or three or five or six or seven or eight or nine or ten or eleven
+NotFive = one or two or three or four or six or seven or eight or nine or ten or eleven
+NotSix = one or two or three or four or five or seven or eight or nine or ten or eleven
+NotSeven = one or two or three or four or five or six or eight or nine or ten or eleven
+NotEight = one or two or three or four or five or six or seven or nine or ten or eleven
+NotNine = one or two or three or four or five or six or seven or eight or ten or eleven 
+NotTen = one or two or three or four or five or six or seven or eight or nine or eleven
+Basic = one or two
+Block = Tile or Wall
+
+=======
+SOUNDS
+=======
+
+
+================
+COLLISIONLAYERS
+================
+
+Background
+Player
+Wall
+Tile 
+mark
+
+
+
+======
+RULES
+======
+
+random [ mark ] [ no wall ] -> [ no mark ] [ random basic ] again
+
+
+[ > Player ] [ Tile ] -> [ > Player ] [ > Tile ]
+
+[ > Tile | No Tile No Wall ] -> [ | > Tile] again
+
+[ > Tile | Wall ] -> [ Stationary Tile | Wall ]
+
+
+[ > Ten | Stationary NotTen ] -> [ Stationary Ten | Stationary NotTen ]
+[ > Nine | Stationary NotNine ] -> [ Stationary Nine | Stationary NotNine ]
+[ > Eight | Stationary NotEight ] -> [ Stationary Eight | Stationary NotEight ]
+[ > Seven | Stationary NotSeven ] -> [ Stationary Seven | Stationary NotSeven ]
+[ > Six | Stationary NotSix ] -> [ Stationary Six | Stationary NotSix ]
+[ > Five | Stationary NotFive ] -> [ Stationary Five | Stationary NotFive ]
+[ > Four | Stationary NotFour ] -> [ Stationary Four | Stationary NotFour ]
+[ > Three | Stationary NotThree ] -> [ Stationary Three | Stationary NotThree ]
+[ > Two | Stationary NotTwo ] -> [ Stationary Two | Stationary NotTwo ]
+[ > one | Stationary Notone ] -> [ Stationary one | Stationary Notone ]
+
+[ > ten | Stationary ten ] -> [ | eleven ]
+[ > nine |Stationary  nine ] -> [ | ten ]
+[ > eight | Stationary eight ] -> [ | nine ]
+[ > seven | Stationary seven ] -> [ | eight ]
+[ > six | Stationary six ] -> [ | seven ]
+[ > five | Stationary five ] -> [ | six ]
+[ > four | Stationary four ] -> [ | five ]
+[ > three | Stationary three ] -> [ | four ]
+[ > two | Stationary two ] -> [ | three ]
+[ > one |Stationary  one ] -> [ | two ]
+
+random  [ moving player ][ No Wall No Tile ] -> [ moving player ][ random Basic ]
+
+
+==============
+WINCONDITIONS
+==============
+
+Some eleven
+
+=======
+LEVELS
+=======
+
+######
+#...2#
+#...2#
+#...1#
+#..@1#
+######
+
+(endless)
+
+######
+#ss..#
+#....#
+#....#
+#...@#
+######
+
