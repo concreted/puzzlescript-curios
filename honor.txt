@@ -1,0 +1,309 @@
+title HONOR
+author concrete atelier
+homepage concrete-atelier.com
+
+color_palette atari
+
+========
+OBJECTS
+========
+
+Background 
+LIGHTGREEN  
+
+Shrine 
+DARKBROWN BROWN YELLOW LIGHTGREEN
+.222.
+22222
+22222
+.222.
+10001
+
+Tree
+WHITE LIGHTRED BROWN
+.000.
+00010
+01000
+..2..
+..2..
+
+PlayerIdle 
+ORANGE YELLOW WHITE LIGHTGREY GREY BROWN BLACK    
+3....
+3.66.
+3.00.
+5224.
+.242.
+
+PlayerMove
+ORANGE YELLOW WHITE LIGHTGREY GREY BROWN BLACK    
+.....
+..66.
+..00.
+3354.
+.242.
+
+
+
+
+PlayerAttack
+ORANGE YELLOW WHITE LIGHTGREY GREY BROWN BLACK    
+.....
+..66.
+..00.
+33335
+.242.
+
+PlayerShadow
+green
+.0.0.
+0.0.0
+.0.0.
+0.0.0
+.0.0.
+
+DeadPlayer
+ORANGE DARKRED WHITE LIGHTGREY GREY BROWN BLACK    
+.....
+.....
+..12.
+60212
+60111
+
+SamuraiIdle
+ORANGE DARKRED DARKGREY LIGHTGREY GREY BROWN BLACK   
+3....
+3.11.
+31001
+5226.
+.262.
+
+SamuraiMove
+ORANGE DARKRED DARKGREY LIGHTGREY GREY BROWN BLACK   
+.....
+..11.
+.1001
+3356.
+.262.
+
+SamuraiAttack
+ORANGE DARKRED DARKGREY LIGHTGREY GREY BROWN BLACK   
+.....
+..11.
+.1001
+33335
+.262.
+
+DeadSamurai
+ORANGE DARKRED DARKGREY LIGHTGREY GREY BROWN BLACK DARKRED
+.....
+.....
+.712.
+70212
+70111
+
+NinjaIdle
+DARKGREY BLACK LIGHTGREY
+.....
+..00.
+..11.
+..00.
+..00.
+
+NinjaReady
+DARKGREY BLACK LIGHTGREY
+.....
+2.00.
+0.11.
+.000.
+..00.
+
+DeadNinja
+DARKGREY BLACK DARKRED
+.....
+.....
+.....
+01020
+01222
+
+Buddha 
+GREY LIGHTGREY DARKGREY   
+.....
+.222.
+21212
+20102
+.....
+
+BrokenBuddha
+GREY LIGHTGREY DARKGREY   
+.....
+.2.2.
+21.12
+20.02
+.....
+
+Grass
+DARKGREEN GREEN
+.0..0
+101.0
+00101
+00101
+00101
+
+=======
+LEGEND
+=======
+
+. = Background
+# = Tree
+P = PlayerIdle
+S = SamuraiIdle
+N = NinjaIdle
+* = Buddha
+! = BrokenBuddha
+@ = Buddha and Shrine
+O = Shrine
+^ = Grass
+
+Object = Buddha or Tree
+Samurai = SamuraiIdle or SamuraiAttack or SamuraiMove
+Ninja = NinjaIdle or NinjaReady
+Enemy = Samurai or Ninja
+Dead = DeadPlayer or DeadSamurai or DeadNinja
+EnemyDA = Samurai or Ninja or DeadSamurai or DeadNinja
+Player = PlayerIdle or PlayerAttack or PlayerMove
+PlayerVulnerable = PlayerIdle or PlayerMove 
+Empty = Background or Shrine or Grass or Dead
+
+=======
+SOUNDS
+=======
+
+Buddha Destroy 78072702
+DeadSamurai Create 36506301
+DeadPlayer Create 44912704
+TitleScreen 59447505
+EndLevel 97192100
+EndGame 61700705
+
+================
+COLLISIONLAYERS
+================
+
+Background
+PlayerShadow
+Shrine, BrokenBuddha, Dead
+Player, Tree, Buddha
+Enemy
+Grass
+
+
+
+======
+RULES     
+======    
+
+( Initialize turn )
+
+
+
+( Samurai Move )
+[ STATIONARY Samurai | ... | Player No Grass ] -> [ > SamuraiMove | ... | Player No Grass ]
+[ STATIONARY Samurai | ... | PlayerShadow ] -> [ > SamuraiMove | ... | PlayerShadow ]
+
+Right [ STATIONARY Samurai | ... | Buddha ] -> [ > SamuraiMove | ... | Buddha ]
+Down [ STATIONARY Samurai | ... | Buddha ] -> [ > SamuraiMove | ... | Buddha ]
+Left [ STATIONARY Samurai | ... | Buddha ] -> [ > SamuraiMove | ... | Buddha ]
+Up [ STATIONARY Samurai | ... | Buddha ] -> [ > SamuraiMove | ... | Buddha ]
+
+[ DeadPlayer ] [ STATIONARY Samurai ] -> [ DeadPlayer ] [ randomdir SamuraiMove ]
+
+
+( Player Move )
+
+[ > Player | Buddha ] -> [ > PlayerMove | > Buddha ] 
+
+[ > Player | Empty | < Samurai ] -> [ > PlayerAttack | Empty | < Samurai ]
+
+[ > Player No Grass | Samurai ] -> [ < PlayerMove | > SamuraiMove ]
+
+[ > Player Grass | Enemy ] -> [ > PlayerAttack Grass | Enemy ]
+
+
+( Enemy Object Collision)
+[ > Enemy | Object ] -> [ Enemy | Object ]
+
+[ STATIONARY Samurai ] -> [ SamuraiIdle]
+
+
+
+( Set Shadow )
+
+[ PlayerShadow ] -> [ No PlayerShadow ]
+
+[ Player No Grass ] -> [ Player PlayerShadow ]
+
+
+
+( End turn )
+late [ SamuraiIdle | Player No Grass ] -> [ SamuraiAttack | DeadPlayer ]
+
+
+
+late [ PlayerVulnerable SamuraiMove ] -> [ DeadPlayer SamuraiAttack ]
+late [ PlayerAttack No Enemy ] -> [ PlayerMove ]
+late [ PlayerAttack Samurai ] -> [ PlayerAttack DeadSamurai ]
+late [ Player Ninja ] -> [ PlayerAttack DeadNinja ]
+
+
+late [ PlayerIdle | PlayerShadow ] -> [ PlayerMove | PlayerShadow ]
+late [ Player PlayerShadow ] -> [ PlayerIdle PlayerShadow ]
+
+late [ SamuraiIdle | Buddha ] -> [ SamuraiAttack | BrokenBuddha ]
+
+==============
+WINCONDITIONS
+==============
+
+All Shrine on Buddha  
+No Enemy
+
+=======     
+LEVELS
+=======
+
+MESSAGE 1
+
+#########
+#.......#
+#.@...O.#
+#.....*.#
+#.......#
+###...###
+^^#...#^^
+^^#.P.#^^
+^^#...#^^
+
+MESSAGE 2
+
+....*....
+.^^..*.!.
+.^^*..S.*
+....*....
+.#.....*.
+.........
+.P.^^^.S.
+......#..
+....#....
+
+MESSAGE 3
+
+#########
+#.......#
+#.S.^^..#
+#.......#
+#.P...@.#
+#..*....#
+#.^^.SO.#
+#.......#
+#########
