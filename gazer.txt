@@ -1,0 +1,220 @@
+title following
+author concrete atelier
+homepage www.puzzlescript.net
+
+========
+OBJECTS
+========
+
+Background
+LIGHTGREEN GREEN
+11111
+01111
+11101
+11111
+10111
+
+
+Target
+DarkBlue
+.....
+.000.
+.0.0.
+.000.
+.....
+
+Wall
+BROWN DARKBROWN
+00010
+11111
+01000
+11111
+00010
+
+Player
+Black Orange White Blue
+.000.
+.111.
+22222
+.333.
+.3.3.
+
+Guard
+Purple
+
+Crate
+Orange Yellow
+00000
+0...0
+0...0
+0...0
+00000
+
+GazeLeft
+grey
+.0.0.
+0.0.0
+.0.0.
+0.0.0
+.0.0.
+
+GazeRight
+grey
+.0.0.
+0.0.0
+.0.0.
+0.0.0
+.0.0.
+
+GazeUp
+grey
+.0.0.
+0.0.0
+.0.0.
+0.0.0
+.0.0.
+
+GazeDown
+grey
+.0.0.
+0.0.0
+.0.0.
+0.0.0
+.0.0.
+
+ShoeGaze
+darkgrey
+0.0.0
+.0.0.
+0.0.0
+.0.0.
+0.0.0
+
+=======
+LEGEND
+=======
+
+. = Background
+# = Wall
+P = Player
+E = Guard
+* = Crate
+@ = Crate and Target
+O = Target
+
+Obstacle = Crate
+Gaze = GazeLeft or GazeRight or GazeUp or GazeDown 
+
+=======
+SOUNDS
+=======
+
+
+
+================
+COLLISIONLAYERS
+================
+
+Background
+Target
+Player, Wall, Crate, Guard
+Gaze
+ShoeGaze
+
+======
+RULES
+======
+
+[ > Player | Crate ] -> [ > Player | > Crate ]
+[ > Player | Guard ] -> [ > Player | > guard ]
+
+late [ ShoeGaze ] -> [ No ShoeGaze ]
+
+(look left)
+
+late Left [Guard|no Obstacle no GazeLeft] -> [Guard | GazeLeft]
+late Left [GazeLeft |no Obstacle no GazeLeft] -> [GazeLeft|GazeLeft]
+
+
+
+late Up [GazeLeft |no Obstacle no GazeUp] -> [GazeLeft|GazeUp]
+late Up [GazeUp |no Obstacle no GazeUp] -> [GazeUp|GazeUp]
+
+
+
+late Down [GazeLeft |no Obstacle no GazeDown] -> [GazeLeft|GazeDown]
+late Down [GazeDown |no Obstacle no GazeDown] -> [GazeDown|GazeDown]
+
+late [ Gaze ] -> [ ShoeGaze]
+
+(Look Right)
+late Right [Guard|no Obstacle no GazeRight] -> [Guard | GazeRight]
+late Right [GazeRight |no Obstacle no GazeRight] -> [GazeRight|GazeRight]
+
+
+
+late Up [GazeRight |no Obstacle no GazeUp] -> [GazeRight|GazeUp]
+late Up [GazeUp |no Obstacle no GazeUp] -> [GazeUp|GazeUp]
+
+
+
+late Down [GazeRight |no Obstacle no GazeDown] -> [GazeRight|GazeDown]
+late Down [GazeDown |no Obstacle no GazeDown] -> [GazeDown|GazeDown]
+
+late [ Gaze ] -> [ ShoeGaze]
+
+
+ (Look up)
+late Up [Guard|no Obstacle no GazeUp] -> [Guard | GazeUp]
+late Up [GazeUp|no Obstacle no GazeUp] -> [GazeUp | GazeUp]
+
+
+
+late Left [GazeUp |no Obstacle no GazeLeft] -> [GazeUp|GazeLeft]
+late Left [GazeLeft |no Obstacle no GazeLeft] -> [GazeLeft|GazeLeft]
+
+
+late Right [GazeUp |no Obstacle no GazeRight] -> [GazeUp|GazeRight]
+late Right [GazeRight |no Obstacle no GazeRight] -> [GazeRight|GazeRight]
+
+late [ Gaze ] -> [ ShoeGaze]
+
+(Look down )
+
+late Down [Guard|no Obstacle no GazeDown] -> [Guard | GazeDown]
+late Down [GazeDown|no Obstacle no GazeDown] -> [GazeDown | GazeDown]
+
+
+late Left [GazeDown |no Obstacle no GazeLeft] -> [GazeDown|GazeLeft]
+late Left [GazeLeft |no Obstacle no GazeLeft] -> [GazeLeft|GazeLeft]
+
+
+late Right [GazeDown |no Obstacle no GazeRight] -> [GazeDown|GazeRight]
+late Right [GazeRight |no Obstacle no GazeRight] -> [GazeRight|GazeRight]
+
+late [ Gaze ] -> [ ShoeGaze]
+
+
+late [ Gaze ] -> [ ShoeGaze]
+
+late [ Gaze ] -> [ No Gaze ]
+
+
+
+
+==============
+WINCONDITIONS
+==============
+
+
+=======
+LEVELS
+=======
+
+......
+.P....
+..*.E.
+......
+......
+
+
