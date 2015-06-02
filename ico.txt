@@ -1,0 +1,150 @@
+
+title 2D
+author concrete atelier
+homepage www.puzzlescript.net
+
+========
+OBJECTS
+========
+
+Background
+lightblue
+
+Wall
+brown darkbrown
+01000
+11111
+00010
+11111
+01000
+
+
+Player
+orange white black yellow brown
+12221
+.000.
+01310
+.111.
+.4.4.
+
+Princess
+orange white
+.111.
+10001
+01110
+.111.
+.0.0.
+
+LeftStep
+grey darkgrey
+0....
+11...
+010..
+1111.
+00010
+
+RightStep
+grey darkgrey
+....0
+...11
+..010
+.1111
+01000
+
+Ladder
+grey darkgrey lightgrey
+22222
+11111
+00000
+11111
+00000
+
+Pot
+brown darkbrown
+00000
+.111.
+00000
+10001
+.111.
+
+=======
+LEGEND
+=======
+
+. = Background
+# = Wall
+P = Player
+Y = Princess
+\ = LeftStep
+/ = RightStep
+| = Ladder
+U = Pot
+
+Step = LeftStep or RightStep
+Ground = Wall or Step or Ladder or Pot or Player
+
+Object = Pot
+Character = Player or Princess
+Piece = Object or Character
+
+=======
+SOUNDS
+=======
+
+
+================
+COLLISIONLAYERS
+================
+
+Background
+LeftStep, RightStep, Ladder
+Pot
+Princess
+Player, Wall
+
+
+======
+RULES
+======
+
+Vertical [ > Player | Object ] -> Cancel
+
+( Pot pushing )
+Horizontal [ > Player | Pot ] -> [ > Player | > Pot ]
+Horizontal [ > Player | > Pot | Object ] -> [ > Player | Pot | Object ]
+
+
+( Princess pulling )
+
+[ < Player | Princess ] -> [ < Player | < Princess ]
+
+( Horizontal [ < Player | Pot ] -> [ < Player | < Pot ] )
+( Prevent pulling pot into player? )
+
+
+Horizontal [ > Pot | Step ] -> [ Pot | Step ]
+
+
+late Down [ No Object | Character Step ] -> [ Character | Step ]
+
+late Down [ Piece | No Object No Ground ] -> [ | Piece ]
+
+late Down [ Object | Player Object] -> Cancel
+
+==============
+WINCONDITIONS
+==============
+
+
+
+=======
+LEVELS
+=======
+.....U...
+.....U...
+.....U...
+.P...U...
+##...###|
+##......|
+##\.....|
+###\.Y./#
